@@ -80,7 +80,7 @@ export function EditGeneralInformation({
         </>
       ) : (
         <div
-          className="flex cursor-pointer items-center justify-between bg-gray-500 px-2 text-xl text-white hover:bg-black"
+          className="flex cursor-pointer items-center justify-between border-b-[1px] border-white bg-gray-500 px-2 text-xl text-white hover:bg-black"
           onClick={() => setDisplayEGI(true)}
         >
           <span className="">General Information</span>
@@ -93,7 +93,7 @@ export function EditGeneralInformation({
 
 export function GeneralInformation({ name, email, mobile }) {
   return (
-    <div className="bg-teal-900 py-3 text-center text-white selection:bg-black">
+    <div className="bg-teal-900 py-3 text-center text-white">
       <h1 className="text-4xl font-thin">{name}</h1>
       <div className="my-3 flex justify-center gap-10">
         <p>{email}</p>
