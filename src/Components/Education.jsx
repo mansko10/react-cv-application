@@ -263,7 +263,7 @@ export function EditEducation({
   setEducation,
 }) {
   return (
-    <div className="bg-gray-300 py-1">
+    <>
       {displayEd ? (
         <>
           <div
@@ -273,19 +273,24 @@ export function EditEducation({
             <span className="">Education</span>
             <span className="text-3xl">-</span>
           </div>
-          <div className="py-1 text-center">
-            {education.map((ed) => {
-              return (
-                <EducationCard
-                  key={ed.id}
-                  ed={ed}
-                  education={education}
-                  setEducation={setEducation}
-                />
-              );
-            })}
+          <div className="bg-gray-300 p-1">
+            <div className="py-1 text-center">
+              {education.map((ed) => {
+                return (
+                  <EducationCard
+                    key={ed.id}
+                    ed={ed}
+                    education={education}
+                    setEducation={setEducation}
+                  />
+                );
+              })}
+            </div>
+            <AddEducationCard
+              education={education}
+              setEducation={setEducation}
+            />
           </div>
-          <AddEducationCard education={education} setEducation={setEducation} />
         </>
       ) : (
         <div
@@ -296,7 +301,7 @@ export function EditEducation({
           <span className="text-3xl">+</span>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

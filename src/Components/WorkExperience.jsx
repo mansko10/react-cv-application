@@ -296,7 +296,7 @@ export function EditWorkExperience({
     <>
       {!displayWE ? (
         <div
-          className="flex cursor-pointer items-center justify-between bg-gray-500 px-2 text-xl text-white hover:bg-black"
+          className="flex cursor-pointer items-center justify-between border-b-[1px] border-white bg-gray-500 px-2 text-xl text-white hover:bg-black"
           onClick={() => setDisplayWE(true)}
         >
           <span className="">Work Experience</span>
