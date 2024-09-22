@@ -6,13 +6,21 @@ import {
 import { EditEducation, Education } from "./Components/Education";
 import { initialGeneralInfo } from "./Data/initialGeneralInfo";
 import { initialEducation } from "./Data/initialEducation";
+import {
+  EditWorkExperience,
+  WorkExperience,
+} from "./Components/WorkExperience";
+import { initial_WEObjects } from "./Data/initialWorkExperience";
 
 function App() {
   const [displayEGI, setDisplayEGI] = useState(false);
   const [displayEd, setDisplayEd] = useState(false);
+  const [displayWE, setDisplayWE] = useState(false);
+
   const [generalInformation, setGeneralInformation] =
     useState(initialGeneralInfo);
   const [education, setEducation] = useState(initialEducation);
+  const [WEObjects, setWEObjects] = useState(initial_WEObjects);
 
   return (
     <>
@@ -27,6 +35,12 @@ function App() {
             generalInformation={generalInformation}
             setGeneralInformation={setGeneralInformation}
           />
+          <EditWorkExperience
+            displayWE={displayWE}
+            setDisplayWE={setDisplayWE}
+            WEObjects={WEObjects}
+            setWEObjects={setWEObjects}
+          />
           <EditEducation
             displayEd={displayEd}
             setDisplayEd={setDisplayEd}
@@ -34,12 +48,13 @@ function App() {
             setEducation={setEducation}
           />
         </div>
-        <div className="cv flex-[0_1_600px] cursor-default shadow-md shadow-black">
+        <div className="cv flex-[0_1_600px] cursor-default pb-14 shadow-md shadow-black">
           <GeneralInformation
             name={generalInformation.name}
             email={generalInformation.email}
             mobile={generalInformation.mobile}
           />
+          <WorkExperience WEObjects={WEObjects} />
           <Education education={education} />
         </div>
       </div>
