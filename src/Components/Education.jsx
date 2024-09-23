@@ -309,7 +309,9 @@ function CVEducationCard({ card }) {
   return (
     <>
       <h2 className="text-3xl">{card.degree}</h2>
-      <p>{card.university}</p>
+      <p>
+        <b>{card.university}</b>
+      </p>
       <p>
         {card.startYear}-{card.endYear}
       </p>

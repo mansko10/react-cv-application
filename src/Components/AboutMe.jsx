@@ -23,7 +23,7 @@ export function EditAboutMe({
             <textarea
               name="aboutMe"
               id="aboutMe"
-              className="h-[70px] w-[250px] resize-none p-2"
+              className="my-2 h-[140px] w-[350px] resize-none p-2"
               value={aboutMe}
               onChange={(e) => setAboutMe(e.target.value)}
             ></textarea>

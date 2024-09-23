@@ -63,6 +63,7 @@ function App() {
             name={generalInformation.name}
             email={generalInformation.email}
             mobile={generalInformation.mobile}
+            profession={generalInformation.profession}
           />
           <AboutMe aboutMe={aboutMe} />
           <WorkExperience WEObjects={WEObjects} />

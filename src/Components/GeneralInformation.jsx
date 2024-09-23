@@ -1,3 +1,5 @@
+import IMAGES from "../img/images";
+
 export function EditGeneralInformation({
   displayEGI,
   setDisplayEGI,
@@ -34,6 +36,25 @@ export function EditGeneralInformation({
                   setGeneralInformation({
                     ...generalInformation,
                     name: e.target.value,
+                  })
+                }
+              />
+            </label>
+            <label
+              htmlFor="profession"
+              className="my-1 flex items-center justify-center gap-x-1"
+            >
+              <div className="w-32 text-right">Profession:</div>
+              <input
+                type="text"
+                name="profession"
+                id="profession"
+                value={generalInformation.profession}
+                className="border-[1px] border-gray-600 px-2 py-1"
+                onChange={(e) =>
+                  setGeneralInformation({
+                    ...generalInformation,
+                    profession: e.target.value,
                   })
                 }
               />
@@ -91,13 +112,20 @@ export function EditGeneralInformation({
   );
 }
 
-export function GeneralInformation({ name, email, mobile }) {
+export function GeneralInformation({ name, email, mobile, profession }) {
   return (
     <div className="bg-teal-900 py-3 text-center text-white">
       <h1 className="text-4xl font-thin">{name}</h1>
+      <p className="my-3">{profession}</p>
       <div className="my-3 flex justify-center gap-10">
-        <p>{email}</p>
-        <p>{mobile}</p>
+        <p className="flex items-center justify-center gap-x-1">
+          <img src={IMAGES.emailImg} className="pointer-events-none w-[20px]" />
+          {email}
+        </p>
+        <p className="flex items-center justify-center gap-x-1">
+          <img src={IMAGES.phoneImg} className="pointer-events-none w-[20px]" />
+          {mobile}
+        </p>
       </div>
     </div>
   );

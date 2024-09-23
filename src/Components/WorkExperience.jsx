@@ -355,7 +355,9 @@ function CVWorkExperienceCard({ WEObject }) {
           ({WEObject.startYear}-{WEObject.endYear})
         </span>
       </h2>
-      <p>{WEObject.company}</p>
+      <p>
+        <b>{WEObject.company}</b>
+      </p>
       <p>{WEObject.description}</p>
     </div>
   );
