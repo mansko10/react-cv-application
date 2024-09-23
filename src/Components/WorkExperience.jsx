@@ -10,7 +10,6 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
       company: e.target.company.value,
       startYear: e.target.startYear.value,
       endYear: e.target.endYear.value,
-      description: e.target.description.value,
       id: crypto.randomUUID(),
     };
 
@@ -72,17 +71,6 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
               className="border-[1px] border-gray-600 px-2 py-1"
             />
           </label>
-          <label
-            htmlFor="description"
-            className="my-1 flex items-center justify-center gap-x-1"
-          >
-            <div className="w-32 text-right">Description: </div>
-            <textarea
-              name="description"
-              id="description"
-              className="h-[80px] w-[200px] resize-none border-[1px] border-gray-600 px-2 py-1"
-            ></textarea>
-          </label>
           <div className="flex justify-center gap-x-1 py-2">
             <button type="submit" className="bg-blue-700 p-2 text-white">
               Submit
@@ -109,6 +97,31 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
   );
 }
 
+function AddResponsibility({ responsibilities, setResponsibilities }) {
+  function addResponsibility(e) {
+    const oldResponsibilities = [...responsibilities];
+    const newResponsibility = {
+      description: "",
+      id: crypto.randomUUID(),
+    };
+
+    oldResponsibilities.push(newResponsibility);
+    setResponsibilities(oldResponsibilities);
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        className="mx-auto bg-blue-300 text-white"
+        onClick={addResponsibility}
+      >
+        Add Responsibility +
+      </button>
+    </>
+  );
+}
+
 function EditWorkExperienceCard({
   WEObject,
   setEdit,
@@ -119,7 +132,32 @@ function EditWorkExperienceCard({
   const [company, setCompany] = useState(WEObject.company);
   const [startYear, setStartYear] = useState(WEObject.startYear);
   const [endYear, setEndYear] = useState(WEObject.endYear);
-  const [description, setDescription] = useState(WEObject.description);
+  const [responsibilities, setResponsibilities] = useState(
+    WEObject.responsibilities,
+  );
+
+  function handleResponsibilitiesDelete(e, responsibilities, responsibility) {
+    const newResponsibilities = responsibilities.filter(
+      (resp) => resp.id !== responsibility.id,
+    );
+
+    setResponsibilities(newResponsibilities);
+  }
+
+  function handleResponsibilitiesChange(e, responsibility) {
+    const oldResponsibilities = [...responsibilities];
+
+    const newResponsibilities = oldResponsibilities.map((oldResponsibility) => {
+      console.log({ ...oldResponsibility });
+      if (oldResponsibility.id === responsibility.id) {
+        return { ...responsibility, description: e.target.value };
+      } else {
+        return { ...oldResponsibility };
+      }
+    });
+
+    setResponsibilities(newResponsibilities);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -129,8 +167,8 @@ function EditWorkExperienceCard({
       company: e.target.company.value,
       startYear: e.target.startYear.value,
       endYear: e.target.endYear.value,
-      description: e.target.description.value,
-      id: crypto.randomUUID(),
+      responsibilities: responsibilities,
+      id: WEObject.id,
     };
 
     const newWEObjects = WEObjects.map((obj) => {
@@ -204,19 +242,49 @@ function EditWorkExperienceCard({
             className="border-[1px] border-gray-600 px-2 py-1"
           />
         </label>
-        <label
-          htmlFor="description"
-          className="my-1 flex items-center justify-center gap-x-1"
-        >
-          <div className="w-32 text-right">Description: </div>
-          <textarea
-            name="description"
-            id="description"
-            className="h-[80px] w-[200px] resize-none border-[1px] border-gray-600 px-2 py-1"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </label>
+        <>
+          {responsibilities.map((responsibility, index) => {
+            return (
+              <div
+                key={responsibility.id}
+                className="my-1 flex items-start justify-center gap-x-1"
+              >
+                <label htmlFor={index + 1}>Responsibility #{index + 1}</label>
+                <textarea
+                  name={index + 1}
+                  id={index + 1}
+                  className="h-[150px] w-[200px] resize-none"
+                  value={responsibility.description}
+                  onChange={(e) =>
+                    handleResponsibilitiesChange(e, responsibility)
+                  }
+                ></textarea>
+                <button
+                  type="button"
+                  onClick={(e) =>
+                    handleResponsibilitiesDelete(
+                      e,
+                      responsibilities,
+                      responsibility,
+                    )
+                  }
+                  className="bg-red-950 text-white"
+                >
+                  Delete
+                </button>
+              </div>
+            );
+          })}
+        </>
+        <p>
+          {
+            "(Please submit after adding or deleting responsibility to see changes.)"
+          }
+          <AddResponsibility
+            responsibilities={responsibilities}
+            setResponsibilities={setResponsibilities}
+          />
+        </p>
         <div className="flex justify-center gap-x-1 py-2">
           <button type="submit" className="border-2 bg-blue-700 p-2 text-white">
             Submit
@@ -358,7 +426,18 @@ function CVWorkExperienceCard({ WEObject }) {
       <p>
         <b>{WEObject.company}</b>
       </p>
-      <p>{WEObject.description}</p>
+      <ul>
+        {WEObject.responsibilities.map((responsibility) => {
+          return (
+            <li
+              key={responsibility.id}
+              className="mx-auto my-1 w-[85%] list-outside list-disc"
+            >
+              {responsibility.description}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
