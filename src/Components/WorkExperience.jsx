@@ -2,21 +2,67 @@ import { useState } from "react";
 
 function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
   const [formOpen, setFormOpen] = useState(false);
+  const [blank, setBlank] = useState({
+    title: "",
+    company: "",
+    startYear: "",
+    endYear: "",
+    id: crypto.randomUUID(),
+  });
+
+  const [responsibilities, setResponsibilities] = useState([
+    { description: "", id: crypto.randomUUID() },
+  ]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    const updatedObject = {
-      title: e.target.title.value,
-      company: e.target.company.value,
-      startYear: e.target.startYear.value,
-      endYear: e.target.endYear.value,
-      id: crypto.randomUUID(),
-    };
-
     const WEObjectsCopy = [...WEObjects];
-    WEObjectsCopy.push(updatedObject);
+    const x = { ...blank };
+    x.responsibilities = responsibilities;
+    WEObjectsCopy.push(x);
     setWEObjects(WEObjectsCopy);
     setFormOpen(false);
+  }
+
+  function handleOpen(e) {
+    setFormOpen(true);
+    setBlank({
+      title: "",
+      company: "",
+      startYear: "",
+      endYear: "",
+      id: crypto.randomUUID(),
+    });
+
+    setResponsibilities([{ description: "", id: crypto.randomUUID() }]);
+  }
+
+  function handleChange(e) {
+    const temp = { ...blank };
+    temp[e.target.id] = e.target.value;
+    setBlank(temp);
+  }
+
+  function handleResponsibilitiesChange(e, responsibility) {
+    const oldResponsibilities = [...responsibilities];
+
+    const newResponsibilities = oldResponsibilities.map((oldResponsibility) => {
+      if (oldResponsibility.id === responsibility.id) {
+        return { ...responsibility, description: e.target.value };
+      } else {
+        return { ...oldResponsibility };
+      }
+    });
+
+    setResponsibilities(newResponsibilities);
+  }
+
+  function handleResponsibilitiesDelete(e, responsibilities, responsibility) {
+    const newResponsibilities = responsibilities.filter(
+      (resp) => resp.id !== responsibility.id,
+    );
+
+    setResponsibilities(newResponsibilities);
   }
 
   return (
@@ -32,6 +78,8 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
               type="text"
               id="title"
               name="title"
+              value={blank.name}
+              onChange={handleChange}
               className="border-[1px] border-gray-600 px-2 py-1"
             />
           </label>
@@ -44,6 +92,8 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
               type="text"
               id="company"
               name="company"
+              value={blank.company}
+              onChange={handleChange}
               className="border-[1px] border-gray-600 px-2 py-1"
             />
           </label>
@@ -56,6 +106,8 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
               type="text"
               id="startYear"
               name="startYear"
+              value={blank.startYear}
+              onChange={handleChange}
               className="border-[1px] border-gray-600 px-2 py-1"
             />
           </label>
@@ -68,9 +120,47 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
               type="text"
               id="endYear"
               name="endYear"
+              value={blank.endYear}
+              onChange={handleChange}
               className="border-[1px] border-gray-600 px-2 py-1"
             />
           </label>
+          {responsibilities.map((responsibility, index) => {
+            return (
+              <div
+                key={responsibility.id}
+                className="my-1 flex items-start justify-center gap-x-1"
+              >
+                <label htmlFor={index + 1}>Responsibility #{index + 1}</label>
+                <textarea
+                  name={index + 1}
+                  id={index + 1}
+                  className="h-[150px] w-[200px] resize-none"
+                  value={responsibility.description}
+                  onChange={(e) =>
+                    handleResponsibilitiesChange(e, responsibility)
+                  }
+                ></textarea>
+                <button
+                  type="button"
+                  onClick={(e) =>
+                    handleResponsibilitiesDelete(
+                      e,
+                      responsibilities,
+                      responsibility,
+                    )
+                  }
+                  className="bg-red-950 text-white"
+                >
+                  Delete
+                </button>
+              </div>
+            );
+          })}
+          <AddResponsibility
+            responsibilities={responsibilities}
+            setResponsibilities={setResponsibilities}
+          />
           <div className="flex justify-center gap-x-1 py-2">
             <button type="submit" className="bg-blue-700 p-2 text-white">
               Submit
@@ -88,7 +178,7 @@ function AddWorkExperienceCard({ WEObjects, setWEObjects }) {
         <button
           type="button"
           className="mx-auto my-3 block cursor-pointer bg-green-700 p-1 text-xl text-white"
-          onClick={() => setFormOpen(true)}
+          onClick={handleOpen}
         >
           Add More +
         </button>
